@@ -1,9 +1,6 @@
-ALTER TABLE games ADD COLUMN platform_id INT, ADD COLUMN genre_id INT, ADD COLUMN publisher_id INT ;
+ALTER TABLE games DROP COLUMN platform, DROP COLUMN genre, DROP COLUMN publisher ;
 
-UPDATE games g JOIN platform p ON g.platform = p.platform_name SET g.platform_id = p.platform_id ;
-UPDATE games g JOIN genre ge ON g.genre = ge.genre_name SET g.genre_id = ge.genre_id ;
-UPDATE games g JOIN publisher pb ON g.publisher = pb.publisher_name SET g.publisher_id = pb.publisher_id ;
-
-SELECT COUNT(*) AS no_platform FROM games WHERE platform_id IS NULL ;
-SELECT COUNT(*) AS no_genre FROM games WHERE genre_id IS NULL ;
-SELECT COUNT(*) AS no_publisher FROM games WHERE publisher_id IS NULL ;
+ALTER TABLE games
+  ADD CONSTRAINT fk_games_platform FOREIGN KEY (platform_id) REFERENCES platform (platform_id),
+  ADD CONSTRAINT fk_games_genre FOREIGN KEY (genre_id) REFERENCES genre (genre_id),
+  ADD CONSTRAINT fk_games_publisher FOREIGN KEY (publisher_id) REFERENCES publisher (publisher_id) ;
