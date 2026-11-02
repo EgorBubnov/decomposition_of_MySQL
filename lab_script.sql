@@ -1,7 +1,9 @@
-INSERT IGNORE INTO platform (platform_name) SELECT DISTINCT platform FROM games WHERE platform IS NOT NULL ;
-INSERT IGNORE INTO genre (genre_name) SELECT DISTINCT genre FROM games WHERE genre IS NOT NULL ;
-INSERT IGNORE INTO publisher (publisher_name) SELECT DISTINCT publisher FROM games WHERE publisher IS NOT NULL ;
+ALTER TABLE games ADD COLUMN platform_id INT, ADD COLUMN genre_id INT, ADD COLUMN publisher_id INT ;
 
-SELECT COUNT(*) AS platform_cnt FROM platform ;
-SELECT COUNT(*) AS genre_cnt FROM genre ;
-SELECT COUNT(*) AS publisher_cnt FROM publisher ;
+UPDATE games g JOIN platform p ON g.platform = p.platform_name SET g.platform_id = p.platform_id ;
+UPDATE games g JOIN genre ge ON g.genre = ge.genre_name SET g.genre_id = ge.genre_id ;
+UPDATE games g JOIN publisher pb ON g.publisher = pb.publisher_name SET g.publisher_id = pb.publisher_id ;
+
+SELECT COUNT(*) AS no_platform FROM games WHERE platform_id IS NULL ;
+SELECT COUNT(*) AS no_genre FROM games WHERE genre_id IS NULL ;
+SELECT COUNT(*) AS no_publisher FROM games WHERE publisher_id IS NULL ;
